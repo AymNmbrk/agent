@@ -1,5 +1,7 @@
 pipeline {
-  agent any
+  agent {
+    label 'agents'
+  }
   stages {
     stage('BUILD') {
       steps {
@@ -21,7 +23,7 @@ pipeline {
 
     stage('DEPLOY') {
       steps {
-        sh 'cp target/*war /var/lib/jenkins/deploy/spark.war'
+        deploy adapters: [tomcat9(credentialsId: '36f4bf41-38bf-4883-87f8-81adfe9f25ce', path: '', url: 'http://172.17.0.2:8080')], contextPath: 'spark', war: '*.*/war'
       }
     }
 
